@@ -1,0 +1,215 @@
+1. 链表是以节点的方式来存储，是链式存储
+2. 每个节点包含data域，next域：指向下一个节点
+3. 链表各节点不一定是连续存储
+4. 链表分带头节点和不带头节点，根据实际需求确定
+
+单链表的创建（添加）
+1、创建头节点，代表单链表的头
+2. 每添加一个节点，就加到最后
+
+遍历：通过辅助
+
+//直接加到尾部
+package com.zjx.linkedlist;
+
+public class SingleLinkedList {
+    public static void main(String[] args) {
+        //创建节点
+        HeroNode hero1 = new HeroNode(1,"宋江","及时雨");
+        HeroNode hero2 = new HeroNode(2,"卢俊义","玉麒麟");
+        HeroNode hero3 = new HeroNode(3,"吴用","智多星");
+        HeroNode hero4 = new HeroNode(4,"林冲","豹子头");
+        //创建链表
+        SingleLinkedListDemo singleLinkedListDemo = new SingleLinkedListDemo();
+
+        //加入
+        singleLinkedListDemo.add(hero1);
+        singleLinkedListDemo.add(hero2);
+        singleLinkedListDemo.add(hero3);
+        singleLinkedListDemo.add(hero4);
+
+        //显示
+        singleLinkedListDemo.list();
+
+    }
+}
+//定义SingleLikedList来管理英雄
+class SingleLinkedListDemo{
+    //先初始化头节点
+    private HeroNode head = new HeroNode(0,"","");
+    //添加节点到单向链表
+    //在不考虑吧编号顺序时:找到最后的节点，next指向新加入的节点即可
+    public void add(HeroNode heroNode){
+        //需要一个辅助变量temp
+        HeroNode temp = head;
+        //遍历链表
+        while (true){
+            if (temp.next == null) break;
+            temp = temp.next; //temp向后移动
+        }
+        //while结束时，temp指向了最后一个节点
+        temp.next = heroNode;
+    }
+
+    //显示链表
+    public void list(){
+        //判断链表是否为空
+        if (head.next == null){
+            System.out.println("链表为空");
+            return;
+        }
+        HeroNode temp = head.next;
+        while (true){
+            //判断是否到链表最后
+            if(temp == null) break;
+            //输出节点信息
+            System.out.println(temp.toString());
+            //temp后移
+            temp =  temp.next;
+        }
+    }
+}
+
+//定义heroNode，每个对象就是一个节点
+class HeroNode{
+    public int no;
+    public String name;
+    public String nickname;
+    public HeroNode next; //指向下一个节点
+
+    public HeroNode(int no, String name, String nickname){
+        this.no = no;
+        this.name = name;
+        this.nickname = nickname;
+    }
+    //为了显示方便，重写toString
+    @Override
+    public String toString() {
+        return "HeroNode{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
+}
+
+// 按照排名添加
+1. 通过temp找到新添加的节点的位置
+2. 新的节点.next = temp.next
+3. temp.next = 新的节点
+
+package com.zjx.linkedlist;
+
+public class SingleLinkedList {
+    public static void main(String[] args) {
+        //创建节点
+        HeroNode hero1 = new HeroNode(1,"宋江","及时雨");
+        HeroNode hero2 = new HeroNode(2,"卢俊义","玉麒麟");
+        HeroNode hero3 = new HeroNode(3,"吴用","智多星");
+        HeroNode hero4 = new HeroNode(4,"林冲","豹子头");
+        //创建链表
+        SingleLinkedListDemo singleLinkedListDemo = new SingleLinkedListDemo();
+
+        //加入
+//        singleLinkedListDemo.add(hero1);
+//        singleLinkedListDemo.add(hero2);
+//        singleLinkedListDemo.add(hero3);
+//        singleLinkedListDemo.add(hero4);
+
+        singleLinkedListDemo.addByorder(hero1);
+        singleLinkedListDemo.addByorder(hero4);
+        singleLinkedListDemo.addByorder(hero3);
+        singleLinkedListDemo.addByorder(hero2);
+        singleLinkedListDemo.addByorder(hero3);
+
+        //显示
+        singleLinkedListDemo.list();
+
+    }
+}
+//定义SingleLikedList来管理英雄
+class SingleLinkedListDemo{
+    //先初始化头节点
+    private HeroNode head = new HeroNode(0,"","");
+    //添加节点到单向链表
+    //在不考虑吧编号顺序时:找到最后的节点，next指向新加入的节点即可
+    public void add(HeroNode heroNode){
+        //需要一个辅助变量temp
+        HeroNode temp = head;
+        //遍历链表
+        while (true){
+            if (temp.next == null) break;
+            temp = temp.next; //temp向后移动
+        }
+        //while结束时，temp指向了最后一个节点
+        temp.next = heroNode;
+    }
+
+    public void addByorder(HeroNode heroNode){
+        //通过temp找到添加的位置，注意temp要放到添加位置的前一个节点
+        HeroNode temp = head;
+        boolean flag = false; //标志添加的编号是否存在，默认为false
+        while (true){
+            if(temp.next == null) break;
+            if(temp.next.no > heroNode.no){ //找到了位置，要插到temp后面
+                break;
+            }
+            else if (temp.next.no == heroNode.no){
+                flag = true;
+                break;
+            }
+            temp = temp.next; //后移，遍历
+        }
+    //判断flag
+        if (flag){ //不能添加，编号已经存在
+            System.out.printf("编号%d已经存在，不能添加\n", heroNode.no);
+        }
+        else {
+            //加入到链表中
+            heroNode.next = temp.next;
+            temp.next = heroNode;
+
+        }
+    }
+
+    //显示链表
+    public void list(){
+        //判断链表是否为空
+        if (head.next == null){
+            System.out.println("链表为空");
+            return;
+        }
+        HeroNode temp = head.next;
+        while (true){
+            //判断是否到链表最后
+            if(temp == null) break;
+            //输出节点信息
+            System.out.println(temp.toString());
+            //temp后移
+            temp =  temp.next;
+        }
+    }
+}
+
+//定义heroNode，每个对象就是一个节点
+class HeroNode{
+    public int no;
+    public String name;
+    public String nickname;
+    public HeroNode next; //指向下一个节点
+
+    public HeroNode(int no, String name, String nickname){
+        this.no = no;
+        this.name = name;
+        this.nickname = nickname;
+    }
+    //为了显示方便，重写toString
+    @Override
+    public String toString() {
+        return "HeroNode{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
+}
