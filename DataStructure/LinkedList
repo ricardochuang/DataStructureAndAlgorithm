@@ -541,3 +541,10 @@ class HeroNode{
                 '}';
     }
 }
+
+
+双向链表
+1. 遍历方法和单向链表一样，但是可以向前也可以向后
+2. 添加：添加到链表最后：先找到最后的节点 temp.next = newHeroNode;还要添加一个反向newHeroNode.pre = temp;
+3. 修改：和单向相同
+4. 删除：temp可以直接找到待删除的节点，temp.pre.next = temp.next; temp.next.pre = temp.pre;
