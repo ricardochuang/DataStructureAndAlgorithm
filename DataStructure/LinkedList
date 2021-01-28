@@ -548,3 +548,198 @@ class HeroNode{
 2. 添加：添加到链表最后：先找到最后的节点 temp.next = newHeroNode;还要添加一个反向newHeroNode.pre = temp;
 3. 修改：和单向相同
 4. 删除：temp可以直接找到待删除的节点，temp.pre.next = temp.next; temp.next.pre = temp.pre;
+
+package com.zjx.linkedlist;
+
+public class DoubleLinkedListDemo {
+    public static void main(String[] args) {
+        System.out.println("双向链表测试");
+        //创建节点
+        HeroNode2 hero1 = new HeroNode2(1,"宋江","及时雨");
+        HeroNode2 hero2 = new HeroNode2(2,"卢俊义","玉麒麟");
+        HeroNode2 hero3 = new HeroNode2(3,"吴用","智多星");
+        HeroNode2 hero4 = new HeroNode2(4,"林冲","豹子头");
+        //创建双向链表
+        DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+//        doubleLinkedList.add(hero1);
+//        doubleLinkedList.add(hero2);
+//        doubleLinkedList.add(hero3);
+//        doubleLinkedList.add(hero4);
+
+        doubleLinkedList.addByOrder(hero1);
+        doubleLinkedList.addByOrder(hero4);
+        doubleLinkedList.addByOrder(hero3);
+        doubleLinkedList.addByOrder(hero2);
+
+
+        //测试list代码
+        doubleLinkedList.list();
+
+        //测试修改
+        HeroNode2 newHero2 = new HeroNode2(2,"小卢","玉麒麟~~~");
+        doubleLinkedList.update(newHero2);
+        System.out.println("修改之后————————————");
+        doubleLinkedList.list();
+
+        //删除
+        doubleLinkedList.del(3);
+        System.out.println("删除之后————————————");
+        doubleLinkedList.list();
+
+    }
+}
+
+
+//创建一个双向链表的类
+class DoubleLinkedList{
+    private HeroNode2 head = new HeroNode2(0,"","");
+
+    public HeroNode2 getHead() {
+        return head;
+    }
+
+    //遍历双向链表，与单链表相同
+    public void list(){
+        //判断链表是否为空
+        if (head.next == null){
+            System.out.println("链表为空");
+            return;
+        }
+        HeroNode2 temp = head.next;
+        while (true){
+            //判断是否到链表最后
+            if(temp == null) break;
+            //输出节点信息
+            System.out.println(temp.toString());
+            //temp后移
+            temp =  temp.next;
+        }
+    }
+
+    //添加节点到双向链表末尾
+    public void add(HeroNode2 heroNode){
+        //需要一个辅助变量temp
+        HeroNode2 temp = head;
+        //遍历链表
+        while (true){
+            if (temp.next == null) break;
+            temp = temp.next; //temp向后移动
+        }
+        //while结束时，temp指向了最后一个节点
+        temp.next = heroNode;
+        heroNode.pre = temp;
+    }
+
+    //按照顺序添加
+    public void addByOrder(HeroNode2 heroNode){
+        //通过temp找到添加的位置，注意temp要放到添加位置的前一个节点
+        HeroNode2 temp = head;
+        boolean flag = false; //标志添加的编号是否存在，默认为false
+        while (true){
+            if(temp.next == null) break;
+            if(temp.next.no > heroNode.no){ //找到了位置，要插到temp后面
+                break;
+            }
+            else if (temp.next.no == heroNode.no){
+                flag = true;
+                break;
+            }
+            temp = temp.next; //后移，遍历
+        }
+        //判断flag
+        if (flag){ //不能添加，编号已经存在
+            System.out.printf("编号%d已经存在，不能添加\n", heroNode.no);
+        }
+        else {
+            //加入到链表中
+            heroNode.next = temp.next;
+            temp.next = heroNode;
+            heroNode.pre = temp;
+
+            if(heroNode.next != null){
+                heroNode.next.pre = heroNode;
+            }
+
+        }
+    }
+
+    //修改，和单向链表几乎一致
+    public void update(HeroNode2 newHeroNode){
+        //判断是否为空
+        if (head.next == null){
+            System.out.println("链表为空");
+            return;
+        }
+        //找要修改的节点
+        HeroNode2 temp = head.next;
+        boolean flag = false; //是否找到节点
+        while (true){
+            if (temp == null) break;
+            if (temp.no == newHeroNode.no){
+                flag = true;
+                break;
+            }
+            temp = temp.next;
+        }
+        //根据flag，判断是否找到
+        if (flag){
+            temp.name = newHeroNode.name;
+            temp.nickname = newHeroNode.nickname;
+        } else {
+            System.out.printf("没有找到编号%d的节点，不能修改\n", newHeroNode.no);
+        }
+    }
+
+    //删除节点，对于双向链表直接找到要删除节点
+    public void del(int no){
+        if (head.next == null){ //空表
+            System.out.println("链表为空，无法删除");
+            return;
+        }
+        HeroNode2 temp = head.next;
+        boolean flag = false;
+        while (true){
+            if(temp == null) break;
+            if(temp.no == no){
+                flag = true;
+                break;
+            }
+            temp = temp.next; //temp后移
+        }
+        //找到
+        if (flag){
+            temp.pre.next = temp.next;
+            //注意这里如果删除的是最后一个节点，temp.next.pre会不存在
+            //如果是最后一个节点就不用执行最后这句
+            if (temp.next != null) temp.next.pre = temp.pre;
+        } else {
+            System.out.printf("要删除的%d节点不存在\n", no);
+        }
+    }
+
+}
+
+
+//定义heroNode，每个对象就是一个节点
+class HeroNode2{
+    public int no;
+    public String name;
+    public String nickname;
+    public HeroNode2 next; //指向下一个节点
+    public HeroNode2 pre; //指向前一个节点
+
+    public HeroNode2(int no, String name, String nickname){
+        this.no = no;
+        this.name = name;
+        this.nickname = nickname;
+    }
+    //为了显示方便，重写toString
+    @Override
+    public String toString() {
+        return "HeroNode{" +
+                "no=" + no +
+                ", name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                '}';
+    }
+}
