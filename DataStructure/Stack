@@ -109,3 +109,147 @@ class ArrayStack{
         }
     }
 }
+
+
+用链表模拟栈
+package com.zjx.stack;
+import java.util.Scanner;
+
+public class LinkedListStack {
+    public static void main(String[] args) {
+        int maxSize = 4;
+        String key ="";
+        Scanner scanner = new Scanner(System.in);
+
+        //创建一个伪栈
+        DummyStackByLinkedList dummyStackByLinkedList = new DummyStackByLinkedList(maxSize);
+
+        boolean loop = true;
+        while (loop){
+            System.out.println("s,显示栈");
+            System.out.println("e,退出");
+            System.out.println("push,添加");
+            System.out.println("pop,出栈");
+            System.out.println("请输入你的选择");
+            key = scanner.next();
+            switch (key){
+                case "s":
+                    try {
+                        dummyStackByLinkedList.list();
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "push":
+                    System.out.println("请输入一个数字");
+                    int value = scanner.nextInt();
+                    node newNode = new node(value);
+                    dummyStackByLinkedList.push(newNode);
+                    break;
+                case "pop":
+                    try {
+                        int res = dummyStackByLinkedList.pop();
+                        System.out.println("出栈的数据是" + res);
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "e":
+                    scanner.close(); //记得先把scanner关闭
+                    loop = false;
+                    break;
+            }
+
+        }
+
+        System.out.println("程序退出");
+    }
+}
+
+//用头插法构造栈
+class DummyStackByLinkedList{
+    //构造头节点
+    private node headNode = new node(0);
+    //构造栈的大小
+    private int maxSize;
+    //构造器
+
+
+    public DummyStackByLinkedList(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    //判断栈空
+    public boolean isEmpty(){
+        return headNode.next == null;
+    }
+
+    //判断栈满
+    public boolean isFull(){
+        node temp = headNode;
+        int count = 0;
+        while (true){
+            if(temp.next == null) break;
+            temp = temp.next;
+            count++;
+        }
+        return  count == maxSize;
+    }
+
+    //显示伪栈中的所有元素
+    public void list(){
+        if (isEmpty()){
+            throw new RuntimeException("伪栈为空，没有元素");
+        }
+        node temp = headNode.next;
+        while (true){
+            if (temp == null) break; //这个方法好！！！！
+            System.out.println(temp.toString());
+            temp = temp.next;
+        }
+    }
+
+    //向伪栈中添加节点
+    public void push(node newNode){
+        if (isFull()){
+            System.out.println("伪栈已满，无法添加");
+            return;
+        }
+        if(isEmpty()){
+            headNode.next = newNode;
+            return;
+        }
+        node temp = headNode.next;
+        newNode.next = temp;
+        headNode.next = newNode;
+    }
+
+    //从伪栈中pop
+    public int pop(){
+        if(isEmpty()){
+            throw new RuntimeException("伪栈为空，不能pop");
+        }
+        node temp = headNode.next;
+        int value = temp.no;
+        headNode.next = temp.next;
+        return value;
+    }
+}
+
+//创建节点
+class node{
+    public int no;
+    public node next;
+
+    //构造器
+    public node(int no) {
+        this.no = no;
+    }
+
+    @Override
+    public String toString() {
+        return "node{" +
+                "no=" + no +
+                '}';
+    }
+}
