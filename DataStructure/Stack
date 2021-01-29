@@ -1,0 +1,111 @@
+FILO
+入栈push，出栈pop。Top变，bottom不变
+
+用数组模拟栈
+1. 用top表示栈顶，初始化为-1
+2. 当有数据入栈的时候，top++; stack[top] = data;
+3. 出栈 int valus = stack[top]; top--; return value;
+
+package com.zjx.stack;
+
+import java.util.Scanner;
+
+public class ArrarStackDemo {
+    public static void main(String[] args) {
+        //测试
+        ArrayStack arrayStack = new ArrayStack(4);
+        String key = "";
+        boolean loop = true;
+        Scanner scanner = new Scanner(System.in);
+
+        while (loop){
+            System.out.println("s,显示栈");
+            System.out.println("e,退出");
+            System.out.println("pu,添加");
+            System.out.println("po,出栈");
+            System.out.println("请输入你的选择");
+            key = scanner.next();
+            switch (key){
+                case "s":
+                    arrayStack.list();
+                    break;
+                case "pu":
+                    System.out.println("请输入一个数字");
+                    int value = scanner.nextInt();
+                    arrayStack.push(value);
+                    break;
+                case "po":
+                    try {
+                        int res = arrayStack.pop();
+                        System.out.println("出栈的数据是" + res);
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "e":
+                    scanner.close(); //记得先把scanner关闭
+                    loop = false;
+                    break;
+            }
+
+        }
+
+        System.out.println("程序退出");
+
+    }
+}
+
+
+//定义一个ArrayStack表示栈
+class ArrayStack{
+    private int maxSize; //栈的大小
+    private int[] stack; //数组，数组模拟栈，数据就放在该数组
+    private int top = -1; //top为栈顶，初始化为-1
+
+    //构造器
+    public ArrayStack(int maxSize) {
+        this.maxSize = maxSize;
+        stack = new int[this.maxSize];
+    }
+
+    //栈满
+    public boolean isFull(){
+        return top == maxSize - 1;
+    }
+
+    //栈空
+    public boolean isEmpty(){
+        return top == -1;
+    }
+
+    //入栈
+    public void push(int value){
+        if(isFull()){
+            System.out.println("已满，无法入栈");
+            return;
+        }
+        top++;
+        stack[top] = value;
+    }
+
+    //出栈
+    public int pop(){
+        if(isEmpty()){
+            throw new RuntimeException("栈已经空");
+        }
+        int value = stack[top];
+        top--;
+        return value;
+    }
+
+    //遍历栈，从栈顶开始输出
+    public void list(){
+        if (isEmpty()){
+            System.out.println("没有数据");
+            return;
+        }
+        for (int i = top; i >= 0; --i){
+            System.out.printf("stack[%d]=%d\n", i, stack[i]);
+        }
+    }
+}
