@@ -72,3 +72,95 @@ public class InsertSort {
 //        System.out.println(Arrays.toString(arr));
     }
 }
+
+
+package com.zjx.sort;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+
+public class InsertSort {
+    public static void main(String[] args) {
+//        int arr[] = {101, 34, 119, 1};
+        //测试冒泡排序的速度，给80k个数据进行测试
+        int arr[] = new int[80000];
+        for (int i = 0; i < 80000; i++) {
+            arr[i] = (int) (Math.random() * 800000); //[0, 800000)
+        }
+
+        //测试时间
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date1Str = simpleDateFormat.format(date);
+        System.out.println("排序前的时间是" + date1Str);
+
+        insertSort(arr);
+
+        Date date2 = new Date();
+        String date2Str = simpleDateFormat.format(date2);
+        System.out.println("排序后的时间是" + date2Str);
+    }
+    //插入排序
+    public static void insertSort(int arr[]){
+        //用for循环简化代码
+        for (int i = 1; i < arr.length; i++) {
+            int insertValue = arr[i]; //待插入的数字
+            int insertIndex = i - 1; //
+            //给insertValue找插入位置
+            while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+                //保证不越界      当前插入数还没有找到适当位置
+                arr[insertIndex + 1] = arr[insertIndex];
+                insertIndex--;
+            }
+            //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+            arr[insertIndex + 1] = insertValue;
+//            System.out.printf("第%d轮后", i);
+//            System.out.println(Arrays.toString(arr));
+        }
+
+//        //第一轮，给34找位置
+//        int insertValue = arr[1]; //待插入的数字
+//        int insertIndex = 0; //
+//        //给insertValue找插入位置
+//        while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+//                   //保证不越界      当前插入数还没有找到适当位置
+//            arr[insertIndex + 1] = arr[insertIndex];
+//            insertIndex--;
+//        }
+//        //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+//        arr[insertIndex + 1] = insertValue;
+//        System.out.println("第一轮后");
+//        System.out.println(Arrays.toString(arr));
+//
+//        //第二轮，给119找位置
+//        insertValue = arr[2]; //待插入的数字
+//        insertIndex = 1; //
+//        //给insertValue找插入位置
+//        while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+//            //保证不越界      当前插入数还没有找到适当位置
+//            arr[insertIndex + 1] = arr[insertIndex];
+//            insertIndex--;
+//        }
+//        //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+//        arr[insertIndex + 1] = insertValue;
+//        System.out.println("第二轮后");
+//        System.out.println(Arrays.toString(arr));
+//
+//        //第三轮，给1找位置
+//        insertValue = arr[3]; //待插入的数字
+//        insertIndex = 2; //
+//        //给insertValue找插入位置
+//        while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+//            //保证不越界      当前插入数还没有找到适当位置
+//            arr[insertIndex + 1] = arr[insertIndex];
+//            insertIndex--;
+//        }
+//        //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+//        arr[insertIndex + 1] = insertValue;
+//        System.out.println("第三轮后");
+//        System.out.println(Arrays.toString(arr));
+    }
+}
+
+速度大概比select sort快一点
