@@ -79,3 +79,106 @@ public class ShellSort {
 //        System.out.println(Arrays.toString(arr)); //[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
 }
+
+package com.zjx.sort;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+
+public class ShellSort {
+    public static void main(String[] args) {
+//        int arr[] = {8, 9, 1, 7, 2, 3, 5, 4, 6, 0};
+        int arr[] = new int[80000];
+        for (int i = 0; i < 80000; i++) {
+            arr[i] = (int) (Math.random() * 800000); //[0, 800000)
+        }
+        //测试时间
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date1Str = simpleDateFormat.format(date);
+        System.out.println("排序前的时间是" + date1Str);
+
+        shellSort(arr);
+
+//        System.out.println("排序后的数组");
+//        System.out.println(Arrays.toString(arr));
+
+        Date date2 = new Date();
+        String date2Str = simpleDateFormat.format(date2);
+        System.out.println("排序后的时间是" + date2Str);
+
+    }
+
+    //用逐步推导来编写希尔排序（用交换法）
+    public static void shellSort(int arr[]){
+        int temp = 0;
+//        int count = 0;
+        //根据逐步分析整合代码
+        for (int gap = arr.length/2; gap >0; gap /= 2) {
+            for (int i = gap; i < arr.length; i++) {
+                //遍历各组中所有的元素（共有gap组，每组length/gap个元素，因此步长是gap）
+                for (int j = i - gap; j >= 0; j -= gap) {
+                    //若当前元素大于加上步长之后的元素，说明交换
+                    if (arr[j] > arr[j + gap]){
+                        temp = arr[j];
+                        arr[j] = arr[j + gap];
+                        arr[j + gap] = temp;
+                    }
+                }
+            }
+//            count++;
+//            System.out.printf("第%d轮后-----", count);
+//            System.out.println(Arrays.toString(arr));
+        }
+
+//        int temp = 0;
+//        //第一轮排序，是将10个数据分成5组
+//        for (int i = 5; i < arr.length; i++) {
+//            //遍历各组中所有的元素（共有5组，每组2个元素，因此步长是5）
+//            for (int j = i - 5; j >= 0; j -= 5) {
+//                //若当前元素大于加上步长之后的元素，说明交换
+//                if (arr[j] > arr[j + 5]){
+//                    temp = arr[j];
+//                    arr[j] = arr[j + 5];
+//                    arr[j + 5] = temp;
+//                }
+//            }
+//        }
+//        System.out.println("第一轮后-----");
+//        System.out.println(Arrays.toString(arr)); //[3, 5, 1, 6, 0, 8, 9, 4, 7, 2]
+//        //第二轮排序，是将10个数据分成2（10/2/2）组
+//        for (int i = 2; i < arr.length; i++) {
+//            //遍历各组中所有的元素（共有5组，每组2个元素，因此步长是5）
+//            for (int j = i - 2; j >= 0; j -= 2) {
+//                //若当前元素大于加上步长之后的元素，说明交换
+//                if (arr[j] > arr[j + 2]){
+//                    temp = arr[j];
+//                    arr[j] = arr[j + 2];
+//                    arr[j + 2] = temp;
+//                }
+//            }
+//        }
+//        System.out.println("第二轮后-----");
+//        System.out.println(Arrays.toString(arr)); //[0, 2, 1, 4, 3, 5, 7, 6, 9, 8]
+//        //第二轮排序，是将10个数据分成1（10/2/2/2）组
+//        for (int i = 1; i < arr.length; i++) {
+//            //遍历各组中所有的元素（共有5组，每组2个元素，因此步长是5）
+//            for (int j = i - 1; j >= 0; j -= 1) {
+//                //若当前元素大于加上步长之后的元素，说明交换
+//                if (arr[j] > arr[j + 1]){
+//                    temp = arr[j];
+//                    arr[j] = arr[j + 1];
+//                    arr[j + 1] = temp;
+//                }
+//            }
+//        }
+//        System.out.println("第三轮后-----");
+//        System.out.println(Arrays.toString(arr)); //[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    }
+}
+
+时间用了大概11s
+
+
+
