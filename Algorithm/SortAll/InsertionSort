@@ -1,0 +1,74 @@
+把待排元素看成有序表和无序表，最开始有序表中有n个元素，无序表中有n-1个元素，
+排列过程中每次从无序表中取一个元素，把它的排序码依次与有序表的排序码进行比较，
+将它插入到有序表中的适当位置，使之成为新的有序表
+
+package com.zjx.sort;
+
+import java.util.Arrays;
+
+public class InsertSort {
+    public static void main(String[] args) {
+        int arr[] = {101, 34, 119, 1};
+        insertSort(arr);
+    }
+    //插入排序
+    public static void insertSort(int arr[]){
+        //用for循环简化代码
+        for (int i = 1; i < arr.length; i++) {
+            int insertValue = arr[i]; //待插入的数字
+            int insertIndex = i - 1; //
+            //给insertValue找插入位置
+            while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+                //保证不越界      当前插入数还没有找到适当位置
+                arr[insertIndex + 1] = arr[insertIndex];
+                insertIndex--;
+            }
+            //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+            arr[insertIndex + 1] = insertValue;
+            System.out.printf("第%d轮后", i);
+            System.out.println(Arrays.toString(arr));
+        }
+
+//        //第一轮，给34找位置
+//        int insertValue = arr[1]; //待插入的数字
+//        int insertIndex = 0; //
+//        //给insertValue找插入位置
+//        while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+//                   //保证不越界      当前插入数还没有找到适当位置
+//            arr[insertIndex + 1] = arr[insertIndex];
+//            insertIndex--;
+//        }
+//        //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+//        arr[insertIndex + 1] = insertValue;
+//        System.out.println("第一轮后");
+//        System.out.println(Arrays.toString(arr));
+//
+//        //第二轮，给119找位置
+//        insertValue = arr[2]; //待插入的数字
+//        insertIndex = 1; //
+//        //给insertValue找插入位置
+//        while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+//            //保证不越界      当前插入数还没有找到适当位置
+//            arr[insertIndex + 1] = arr[insertIndex];
+//            insertIndex--;
+//        }
+//        //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+//        arr[insertIndex + 1] = insertValue;
+//        System.out.println("第二轮后");
+//        System.out.println(Arrays.toString(arr));
+//
+//        //第三轮，给1找位置
+//        insertValue = arr[3]; //待插入的数字
+//        insertIndex = 2; //
+//        //给insertValue找插入位置
+//        while (insertIndex >= 0 && insertValue < arr[insertIndex]){
+//            //保证不越界      当前插入数还没有找到适当位置
+//            arr[insertIndex + 1] = arr[insertIndex];
+//            insertIndex--;
+//        }
+//        //当退出while循环时，说明插入位置找到了，是insertIndex + 1
+//        arr[insertIndex + 1] = insertValue;
+//        System.out.println("第三轮后");
+//        System.out.println(Arrays.toString(arr));
+    }
+}
