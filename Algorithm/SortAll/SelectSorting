@@ -199,4 +199,5 @@ public class SelectSort {
 }
 
 测试时间后发现，select sort比bubble sort用时短
+大概5s
 
