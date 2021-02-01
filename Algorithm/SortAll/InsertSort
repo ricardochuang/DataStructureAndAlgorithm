@@ -164,6 +164,7 @@ public class InsertSort {
 }
 
 速度大概比select sort快一点
+大概1s
 
 
 插入排序的问题: 2 3 4 5 6 1
