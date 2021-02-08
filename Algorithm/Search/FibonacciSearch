@@ -9,4 +9,64 @@ F[k] = F[k - 1] + F[k - 2]
 (F[k] - 1) = (F[k - 1] -1) + (F[k - 2] - 1) + 1
    总长度        前面长度         后面长度     mid
 
+package com.zjx.search;
+
+import java.util.Arrays;
+
+public class FibonacciSearch {
+    public static int maxSize = 20;
+    public static void main(String[] args) {
+        int[] arr = {1, 8, 10, 89, 1000, 1234};
+        System.out.println(fibSearch(arr, 89));
+
+    }
+
+    //构建Fibonacci数列
+    public static int[] fib(){
+        int[] f = new int[maxSize];
+        f[0] = 1;
+        f[1] = 1;
+        for (int i = 2; i < maxSize; i++) {
+            f[i] = f[i - 1] + f[i - 2];
+        }
+        return f;
+    }
+
+    //编写Fibonacci算法（非递归）
+    public static int fibSearch(int[] a, int key){
+        int low = 0;
+        int high = a.length - 1;
+        int k = 0; //分割数值的下标
+        int mid = 0;
+        int f[] = fib(); //获取Fibonacci数列
+
+        //获取k
+        while (high > f[k] - 1){
+            k++;
+        }
+
+        //因为f[k]可能大于数组长度，因此使用Array类，构造新的数组，并指向a[]
+        //不足的部分用0填充
+        int[] temp = Arrays.copyOf(a, f[k]);
+        //实际上要用a数组最后的数字填充temp
+        for (int i = high + 1; i < temp.length; i++) {
+            temp[i] = a[high];
+        }
+        //使用while来找到key
+        while (low <= high){
+            mid = low + f[k - 1] - 1;
+            if (key < temp[mid]){ //向前查找
+                high = mid - 1;
+                k--;
+            }else if(key > temp[mid]){ //向后查找
+                low = mid + 1;
+                k -= 2;
+            } else {
+                //需要确定返回的是mid还是high
+                return Math.min(mid, high);
+            }
+        }
+        return -1;
+    }
+}
 
