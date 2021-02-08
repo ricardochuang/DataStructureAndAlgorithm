@@ -1,0 +1,43 @@
+二分查找：要对有序数组进行查找
+1. 首先确定该数组的中间下标 mid = (left + right) / 2
+2. 然后让要查找的数(findVal)跟arr[mid]比较。如果findVal大，向右递归，反之，向左递归。
+3. 相等返回
+
+递归的退出条件：
+1. 找到就退出
+2. 所有数组都找过(left > right)
+
+
+package com.zjx.search;
+
+public class BinarySearch {
+    public static void main(String[] args) {
+        int arr[] = {1, 8, 10, 89, 1000, 1234};
+        int resIndex = binarySearch(arr, 0, arr.length - 1, 1234);
+        System.out.println(resIndex);
+    }
+
+    /**
+     *
+     * @param arr 数组
+     * @param left 左侧索引
+     * @param right 右侧索引
+     * @param findVal 要查找的值
+     * @return 返回的下标
+     */
+    public static int binarySearch(int[] arr,int left, int right, int findVal){
+        //left > right 找不到
+
+        if (left > right) return -1;
+
+        int mid = (left + right) / 2;
+        int midVal = arr[mid];
+
+        if (findVal > midVal){ //向右
+            return binarySearch(arr, mid + 1, right, findVal);
+        } else if (findVal < midVal){ //向左
+            return binarySearch(arr, left, mid - 1, findVal);
+        } else return mid;
+
+    }
+}
