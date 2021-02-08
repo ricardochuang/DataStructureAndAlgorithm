@@ -1,0 +1,44 @@
+如果一个从1到20的数组，找1，就要浪费好多次。
+解决方案：插值查找
+
+mid = left + (right - left) * (findVal - arr[left])/(arr[right] - arr[left])
+
+举例：arr = {0， 1， 2， ... 100}
+加入要找1，对于二分查找，要多次递归
+如果使用插值 mid = 0 + (99 - 0) * (1 - 1) / (100 - 1) = 1 一次找到
+如果找100 mid = 0 + (99 - 0) * (100 - 1) / (100 - 1) = 99 一次找到
+
+package com.zjx.search;
+
+import java.util.Arrays;
+
+public class InsertValueSearch {
+    public static void main(String[] args) {
+        int[] arr = new int[100];
+        for (int i = 0; i < 100; i++) {
+            arr[i] = i + 1;
+        }
+//        System.out.println(Arrays.toString(arr));
+        int res = insertValueSearch(arr, 0 ,arr.length - 1, 100);
+        System.out.println(res);
+    }
+
+    /**
+     *
+     * @param arr 数组
+     * @param left 左侧索引
+     * @param right 右侧索引
+     * @param findValue 查找值
+     * @return 找到饭hi对应下标，找不到返回-1
+     */
+    public static int insertValueSearch(int[] arr, int left, int right, int findValue){
+        if (left > right || findValue < arr[0] || findValue > arr[arr.length - 1]) return -1;
+
+        int mid = left + (right - left) * (findValue - arr[left])/(arr[right] - arr[left]);
+        int midVal = arr[mid];
+
+        if(findValue > midVal) return insertValueSearch(arr, mid + 1, right, findValue);
+        else if(findValue < midVal) return insertValueSearch(arr, left, mid - 1, findValue);
+        else return mid;
+    }
+}
