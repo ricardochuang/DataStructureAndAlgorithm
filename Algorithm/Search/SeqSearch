@@ -1,3 +1,6 @@
+找中间，对比大小
+注意返回条件
+
 package com.zjx.search;
 
 public class SeqSearch {
