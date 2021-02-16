@@ -285,3 +285,89 @@ class ThreadedBinaryTreeDemo{
             node = node.getRight();
         }
     }
+
+
+注意：在前序线索化的时候，可能出现在死循环的情况（3和8），因此要添加退出条件
+//实现前序线索化
+    public void threadedNodes0(HeroNode node){
+        if (node == null) return;
+        //当前，左，右
+
+        //对于当前节点的处理
+        if (node.getLeft() == null){
+            //让当前节点的做指针指向前驱节点
+            node.setLeft(pre);
+            node.setLeftType(1); //指向前驱节点
+        }
+        if (pre != null && pre.getRight() == null) {
+            pre.setRight(node);
+            pre.setRightType(1);
+        }
+        pre = node;
+
+        if (node.getLeftType() == 0) threadedNodes0(node.getLeft());
+
+        if (node.getRightType() == 0) threadedNodes0(node.getRight());
+    }
+    
+ 遍历的时候可以按照图示来思考顺序
+    public void threadList0(){
+        //定义变量，临时存储当前节点
+        HeroNode node = root;
+        while(node != null){
+            System.out.println(node);
+            //后面node会随着遍历而变化
+            while (node.getLeftType() == 0){
+                node = node.getLeft();
+                System.out.println(node);
+            }
+            //如果当前的节点右指针是后继节点，输出
+            while (node.getRightType() == 1){
+                node = node.getRight();
+                System.out.println(node);
+            }
+            //替换遍历的节点
+            node = node.getRight();
+        }
+    }
+    
+对于后续线索化，不用过多的停止条件
+public void threadedNodes2(HeroNode node){
+        if (node == null) return;
+        //左，右，当前
+        threadedNodes2(node.getLeft());
+        threadedNodes2(node.getRight());
+        //对于当前节点的处理
+        if (node.getLeftType() == 1) return;
+        if (node.getLeft() == null){
+            //让当前节点的做指针指向前驱节点
+            node.setLeft(pre);
+            node.setLeftType(1); //指向前驱节点
+        }
+        if (node.getRightType() == 1) return;
+        if (pre != null && pre.getRight() == null) {
+            pre.setRight(node);
+            pre.setRightType(1);
+        }
+        pre = node;
+    }
+对于遍历，要加上很多停止条件
+public void threadList2(){
+        //定义变量，临时存储当前节点
+        HeroNode node = root;
+        while(node != null){
+            //循环找到leftType为1的节点，首先应该找到8
+            //后面node会随着遍历而变化
+            while (node.getLeftType() == 0) node = node.getLeft();
+            System.out.println(node);
+            //如果当前的节点右指针是后继节点，输出
+            while (node.getRightType() == 1){
+                node = node.getRight();
+                System.out.println(node);
+            }
+            if (node == root) break;
+            //替换遍历的节点
+            if (node.getLeftType() == 0 && node.getRightType() == 0) node = root;
+            node = node.getRight();
+        }
+    }
