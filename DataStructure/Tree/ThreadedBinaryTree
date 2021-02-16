@@ -264,3 +264,24 @@ class ThreadedBinaryTreeDemo{
         }
     }
 }
+
+
+对于遍历，无法使用之前的方式遍历，因此要写新的方法
+    //遍历线索化二叉树
+    public void threadList(){
+        //定义变量，临时存储当前节点
+        HeroNode node = root;
+        while(node != null){
+            //循环找到leftType为1的节点，首先应该找到8
+            //后面node会随着遍历而变化
+            while (node.getLeftType() == 0) node = node.getLeft();
+            System.out.println(node);
+            //如果当前的节点右指针是后继节点，输出
+            while (node.getRightType() == 1){
+                node = node.getRight();
+                System.out.println(node);
+            }
+            //替换遍历的节点
+            node = node.getRight();
+        }
+    }
