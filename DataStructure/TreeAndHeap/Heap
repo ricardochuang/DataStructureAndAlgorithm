@@ -1,0 +1,2 @@
+大顶堆：arr[i] >= arr[2*i + 1] && arr[i] >= arr[2 * i + 2]
+小顶堆：arr[i] <= arr[2*i + 1] && arr[i] <= arr[2 * i + 2]
