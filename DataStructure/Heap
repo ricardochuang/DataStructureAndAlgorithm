@@ -1,2 +1,69 @@
 大顶堆：arr[i] >= arr[2*i + 1] && arr[i] >= arr[2 * i + 2]
 小顶堆：arr[i] <= arr[2*i + 1] && arr[i] <= arr[2 * i + 2]
+
+堆排序：
+先做一个堆，然后反复交换
+
+package com.zjx.tree;
+
+import java.util.Arrays;
+
+public class HeapSort {
+    public static void main(String[] args) {
+        //将数组升序
+        int arr[] = {4, 6, 8, 5, 9};
+        heapSort(arr);
+    }
+
+    //编写堆排序的方法
+    public static void heapSort(int[] arr) {
+        int temp = 0;
+        System.out.println("堆排序！！！");
+        //分步完成
+//        adjustHeap(arr, 1, arr.length);
+//        System.out.println(Arrays.toString(arr));
+//        adjustHeap(arr, 0, arr.length);
+//        System.out.println(Arrays.toString(arr));
+        //最终代码
+        //构建大顶堆
+        for (int i = arr.length / 2 - 1; i >= 0; i--) {
+            //arr.length / 2 -1可以找到最下面的非叶子节点
+            adjustHeap(arr, i, arr.length);
+        }
+        //大顶堆的第一个数字就是最大的数字，让该数字下沉到底
+        for (int i = arr.length - 1; i > 0; i--) {
+            //将第一个arr[0]与最后一个arr[arr.length - 1]交换
+            temp = arr[i];
+            arr[i] = arr[0];
+            arr[0] = temp;
+            adjustHeap(arr, 0, i);
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+    //将一个数组（二叉树）调整为大顶堆
+
+    /**
+     * 做出一个大顶堆
+     *
+     * @param arr    待调整的数组
+     * @param i      表示非叶子节点在数组中的索引
+     * @param length 表示对多少个元素继续调整，length在逐渐减少
+     */
+    public static void adjustHeap(int[] arr, int i, int length) {
+        int temp = arr[i]; //先取出当前元素的值
+        //k = i * 2 + 1 是将k定义到i的左子节点。处理完左子节点后要开始处理右子节点
+        for (int k = i * 2 + 1; k < length; k = k * 2 + 1) {
+            if (k + 1 < length && arr[k] < arr[k + 1]) {
+                //此时左子节点的数更小，我们要找到更大的数
+                k++;
+            }
+            if (arr[k] > temp) {
+                //如果temp不是最大的
+                arr[i] = arr[k]; //让较大的数到上一层去做父节点
+                i = k; //向下一层遍历
+            } else break;
+        }
+        //for结束后，已经出现了以i为父节点的大顶堆
+        arr[i] = temp;
+    }
+}
