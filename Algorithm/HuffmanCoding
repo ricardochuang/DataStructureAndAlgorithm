@@ -371,3 +371,6 @@ class Node implements Comparable<Node>{
         if (this.right != null) this.right.preOrder();
     }
 }
+
+
+解码
