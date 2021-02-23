@@ -78,3 +78,207 @@ class BinaryTree {
         else System.out.println("无法遍历");
     }
 }
+
+
+二叉树的删除
+1. 叶子节点
+先找到要删除的节点target（判断存在），找到目标节点的父节点parent，然后判断target是parent的左子节点还是右子节点，根据前面的情况对应删除
+2. 只有一个子节点的节点
+先找到要删除的节点target（判断存在），找到目标节点的父节点parent，确定target的子节点是左子节点还是右子节点，确定target是parent的左子节点还是右子节点
+3. 有两个子节点的节点
+先找到要删除的节点target（判断存在），找到目标节点的父节点parent，从target的右子树找到最小节点，用一个临时变量temp保存最小值，删除最小节点，
+将temp的值赋给target
+
+package com.zjx.binarysorttree;
+
+public class BinarySortTreeDemo {
+    public static void main(String[] args) {
+        int[] arr = {7, 3, 10, 12, 5, 1, 9, 0};
+        BinaryTree binaryTree = new BinaryTree();
+        //循环添加节点
+        for (int i = 0; i < arr.length; i++) {
+            binaryTree.add(new Node(arr[i]));
+        }
+        binaryTree.infixOrder();
+
+        //测试删除叶子节点
+        binaryTree.delNode(10);
+        System.out.println("删除后");
+        binaryTree.infixOrder();
+    }
+}
+
+//节点
+class Node {
+    int value;
+    Node left;
+    Node right;
+
+    public Node(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "value=" + value +
+                '}';
+    }
+
+    //递归添加节点
+    public void add(Node node) {
+        if (node == null) return;
+        //比较传入的节点和当前子树根节点的关系
+        if (node.value < this.value) {
+            if (this.left == null) {
+                this.left = node;
+            } else {
+                this.left.add(node);
+            }
+        } else {
+            if (this.right == null) {
+                this.right = node;
+            } else {
+                this.right.add(node);
+            }
+        }
+    }
+
+    //中序遍历
+    public void infixOrder() {
+        if (this.left != null) {
+            this.left.infixOrder();
+        }
+        System.out.println(this);
+        if (this.right != null) {
+            this.right.infixOrder();
+        }
+    }
+
+    //查找要删除的节点
+
+    /**
+     *
+     * @param value 要删除的节点的值
+     * @return 如果找到，返回该节点，否则返回null
+     */
+    public Node search(int value){
+        if(value == this.value) return this;
+        else if(value < this.value){
+            //向左子树递归查找
+            if (this.left == null) return null;
+            return this.left.search(value);
+        }
+        else {
+            //向右子树递归查找
+            if (this.right ==null) return null;
+            return this.right.search(value);
+        }
+    }
+
+    //查找要删除节点的父节点
+
+    /**
+     *
+     * @param value 要找到的节点的值
+     * @return 返回要删除节点的父节点，如果没有就返回null
+     */
+    public Node searchParent(int value){
+        if((this.left != null && this.left.value == value) ||
+                (this.right != null && this.right.value == value)){
+            return this;
+        }
+        else {
+            if (value < this.value && this.left != null) return this.left.searchParent(value);
+            else if (value >= this.value && this.right != null) return this.right.searchParent(value);
+            else return null;
+        }
+    }
+}
+
+//创建树
+class BinaryTree {
+    private Node root;
+
+    public void add(Node node) {
+        if (root == null) root = node;
+        else root.add(node);
+    }
+
+    //中序遍历
+    public void infixOrder() {
+        if (root != null) root.infixOrder();
+        else System.out.println("无法遍历");
+    }
+
+    //查找要删除的节点
+    public Node search(int value){
+        if (root == null) return null;
+        else return root.search(value);
+    }
+    //查找父节点
+    public Node searchParent(int value){
+        if (root == null) return null;
+        else return root.searchParent(value);
+    }
+    //删除节点
+    public void delNode(int value){
+        if (root == null) return;
+        else {
+            //先找到要删除的节点
+            Node targetNode = search(value);
+            if (targetNode == null) return;
+            //如果target没有父节点，此时该二叉树只有一个节点
+            if (root.left == null && root.right == null){
+                root = null;
+                return;
+            }
+            //找targetNode的父节点
+            Node parent = searchParent(value);
+
+            //如果是要删除一个叶子节点
+            if (targetNode.left == null && targetNode.right == null){
+                //判断targetNode是parent的左子节点还是右子节点
+                if (parent.left != null && parent.left.value == value) parent.left = null;
+                if (parent.right != null && parent.right.value == value) parent.right = null;
+            }
+            //如果等删除的节点有两个子节点
+            else if(targetNode.left != null && targetNode.right != null){
+                int minVal = delRightTreeMin(targetNode.right);
+                targetNode.value = minVal;
+            }
+            //如果等删除的节点有一个子节点
+            else {
+                //如果要删除的节点有左子节点
+                if (targetNode.left != null){
+                    //如果targetNode是parent的左子节点
+                    if (parent.left.value == value) parent.left = targetNode.left;
+                    else parent.right = targetNode.left;
+                }
+                else { //要删除的节点有右子节点
+                    if (parent.left.value == value) parent.left = targetNode.right;
+                    else parent.right = targetNode.right;
+                }
+            }
+        }
+    }
+
+    /**
+     * 1. 返回最小数
+     * 2. 删除node为根节点的二叉排序树
+     * @param node 传入的节点（当作二叉排序树的根节点）
+     * @return 返回的是以node为根节点的二叉排序树的最小节点的值
+     */
+    public int delRightTreeMin(Node node){
+        Node target = node;
+        //循环查找左节点，就能找到最小值
+        while (target.left != null){
+            target = target.left;
+        }
+        //while之后，target就指向最小节点
+        //删除最小节点
+        delNode(target.value);
+        return target.value;
+    }
+}
+
