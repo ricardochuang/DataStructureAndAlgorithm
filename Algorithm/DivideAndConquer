@@ -1,0 +1,25 @@
+汉诺塔游戏：
+1) 如果只有一个盘 A->C
+2) 如果n>=2，可以看作是两个盘，先要将上面的小盘移到B，再把大盘移到C，再把小盘移到B
+
+package com.zjx.dac;
+
+public class Hanoitower {
+    public static void main(String[] args) {
+        hanoiTower(5, 'A', 'B', 'C');
+    }
+    //汉诺塔的移动方法，使用分治算法解决
+    public static void hanoiTower(int num, char a, char b,char c){
+        //如果只有一个盘
+        if (num == 1){
+            System.out.println("第1个盘从" + a +"到" + c);
+        }else {
+            //将最上面的所有盘从A->B，移动过程会用到c
+            hanoiTower(num - 1, a, c, b);
+            //最下面的盘从A到C
+            System.out.println("第" + num + "个盘从" + a + "到" + c);
+            //把b的所有盘移动到c
+            hanoiTower(num - 1, b, a, c);
+        }
+    }
+}
