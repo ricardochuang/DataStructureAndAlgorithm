@@ -30,3 +30,12 @@ public class ViolenceMatch {
         return -1;
     }
 }
+
+KMP:
+“部分匹配值”就是“前缀”和“后缀”的最长的共有元素的长度。
+以“ABCDABD”为例：
+"A", "AB", "ABC", "ABCD" 的前缀和后缀的共有元素长度都是0
+"ABCDA"的前缀：“A, AB, ABC, ABCD”, 后缀“BCDA, CDA, DA,A”, 所以部分匹配值是1
+“ABCDABD” 的部分匹配则为2
+移动位数： 已匹配的字符数 - 对应的部分匹配值
+
